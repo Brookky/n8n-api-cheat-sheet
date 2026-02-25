@@ -1,0 +1,14 @@
+# Environment
+.env
+*.env
+
+# Session files
+/tmp/n8n_cookie*.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
