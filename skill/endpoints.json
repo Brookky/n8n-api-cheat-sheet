@@ -1,0 +1,105 @@
+{
+  "service": "n8n",
+  "version": "v1",
+  "base_url_env": "N8N_URL",
+  "auth": {
+    "type": "header",
+    "key": "X-N8N-API-KEY",
+    "value_env": "N8N_API_KEY"
+  },
+  "endpoints": [
+    {
+      "id": "list_workflows",
+      "method": "GET",
+      "path": "/api/v1/workflows",
+      "params": {
+        "limit": "integer",
+        "cursor": "string",
+        "active": "boolean",
+        "tags": "string",
+        "name": "string",
+        "projectId": "string",
+        "excludePinnedData": "boolean"
+      }
+    },
+    {
+      "id": "get_workflow",
+      "method": "GET",
+      "path": "/api/v1/workflows/{id}",
+      "path_params": ["id"]
+    },
+    {
+      "id": "create_workflow",
+      "method": "POST",
+      "path": "/api/v1/workflows",
+      "body_allowed": ["name", "nodes", "connections", "active"],
+      "body_forbidden": ["settings", "pinData", "staticData", "id", "createdAt", "updatedAt", "tags"]
+    },
+    {
+      "id": "update_workflow",
+      "method": "PUT",
+      "path": "/api/v1/workflows/{id}",
+      "path_params": ["id"],
+      "body_allowed": ["name", "nodes", "connections", "active"],
+      "body_forbidden": ["settings", "pinData", "staticData", "id", "createdAt", "updatedAt", "tags"]
+    },
+    {
+      "id": "activate_workflow",
+      "method": "POST",
+      "path": "/api/v1/workflows/{id}/activate",
+      "path_params": ["id"]
+    },
+    {
+      "id": "deactivate_workflow",
+      "method": "POST",
+      "path": "/api/v1/workflows/{id}/deactivate",
+      "path_params": ["id"]
+    },
+    {
+      "id": "delete_workflow",
+      "method": "DELETE",
+      "path": "/api/v1/workflows/{id}",
+      "path_params": ["id"]
+    },
+    {
+      "id": "execute_workflow",
+      "method": "POST",
+      "path": "/api/v1/workflows/{id}/run",
+      "path_params": ["id"],
+      "body_allowed": ["data"],
+      "notes": "Public API v1에서 미지원 (405). Webhook 트리거 방식 사용 권장."
+    },
+    {
+      "id": "list_executions",
+      "method": "GET",
+      "path": "/api/v1/executions",
+      "params": {
+        "workflowId": "string",
+        "status": "string",
+        "limit": "integer",
+        "cursor": "string",
+        "includeData": "boolean"
+      }
+    },
+    {
+      "id": "get_execution",
+      "method": "GET",
+      "path": "/api/v1/executions/{id}",
+      "path_params": ["id"],
+      "params": {
+        "includeData": "boolean"
+      }
+    },
+    {
+      "id": "delete_execution",
+      "method": "DELETE",
+      "path": "/api/v1/executions/{id}",
+      "path_params": ["id"]
+    }
+  ],
+  "gotchas": [
+    "PUT/POST body에 settings, pinData, staticData 포함 시 400 에러 (OpenAPI 스펙과 실제 동작 불일치)",
+    "PATCH 미지원 (405) — PUT만 사용",
+    "execute_workflow는 공개 API v1 미지원 — Webhook 트리거 방식 사용"
+  ]
+}
